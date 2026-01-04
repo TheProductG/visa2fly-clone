@@ -1,59 +1,72 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Visa2Fly Clone</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visa2Fly Clone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-  <body>
-    <h1>Visa Application Portal</h1>
-    <p>Apply for your visa in simple steps.</p>
+<body>
+  <h1>Visa Application Portal</h1>
+  <p>Apply for your visa in simple steps.</p>
 
-    <form id="visaForm">
-      <label>Full Name</label><br>
-      <input type="text" placeholder="Enter your full name"><br><br>
+  <form id="visaForm">
+    <label>Full Name</label><br />
+    <input type="text" id="name" placeholder="Enter your full name" required />
+    <br /><br />
 
-      <label>Email</label><br>
-      <input type="email" placeholder="Enter your email"><br><br>
+    <label>Email</label><br />
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <br /><br />
 
-      <label>Destination Country</label><br>
-      <select>
-        <option>Select country</option>
-        <option>UAE</option>
-        <option>USA</option>
-        <option>UK</option>
-        <option>Canada</option>
-      </select><br><br>
+    <label>Destination Country</label><br />
+    <select id="country" required>
+      <option value="">Select country</option>
+      <option>UAE</option>
+      <option>USA</option>
+      <option>UK</option>
+      <option>Canada</option>
+    </select>
+    <br /><br />
 
-      <label>Visa Type</label><br>
-      <select>
-        <option>Select visa type</option>
-        <option>Tourist</option>
-        <option>Business</option>
-        <option>Student</option>
-      </select><br><br>
+    <label>Visa Type</label><br />
+    <select id="visaType" required>
+      <option value="">Select visa type</option>
+      <option>Tourist</option>
+      <option>Business</option>
+      <option>Student</option>
+    </select>
+    <br /><br />
 
-      <button type="submit">Apply Now</button>
-    </form>
+    <button type="submit">Apply Now</button>
+  </form>
 
-    <script>
-      const form = document.getElementById("visaForm");
+  <script>
+    const form = document.getElementById("visaForm");
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault(); // stop page refresh
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-        const name = document.querySelector('input[type="text"]').value;
-        const email = document.querySelector('input[type="email"]').value;
-        const country = document.querySelectorAll("select")[0].value;
-        const visaType = document.querySelectorAll("select")[1].value;
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        country: document.getElementById("country").value,
+        visaType: document.getElementById("visaType").value
+      };
 
-        console.log("Name:", name);
-        console.log("Email:", email);
-        console.log("Country:", country);
-        console.log("Visa Type:", visaType);
+      const response = await fetch("http://localhost:3000/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       });
-    </script>
-  </body>
+
+      const result = await response.json();
+      alert(result.message);
+    });
+  </script>
+</body>
 </html>
 
 
